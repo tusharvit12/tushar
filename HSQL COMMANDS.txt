@@ -1,0 +1,39 @@
+CREATE TABLE BANK_APPLICANT
+(
+	APPLICANT_ID INT PRIMARY KEY,
+	APPLICANT_NAME VARCHAR(20),
+	APPLICANT_EMAIL_ADDRESS VARCHAR(50),
+	APPLICANT_ADDRESS VARCHAR(50),
+	APPLICANT_MOBILE_NUMBER VARCHAR(15),
+	APPLICANT_DOB DATE
+)
+
+
+
+INSERT INTO BANK_APPLICANT VALUES (131,'JOULES','JOULES@GMAIL.COM','BELAPUR','1231231238','1991-12-20')
+
+
+
+select * from item where ordid in 
+	(select ordid from ord where custid in 
+		(select custid from customer where repid in 
+			(select empno from emp where deptno=
+				(select deptno from dept where loc='CHICAGO') 
+				and job='SALESMAN' and ename='MARTIN')));
+
+select * from product where prodid in 
+	(select prodid from item where ordid in
+	(select ordid from ord where custid in 
+		(select custid from customer where repid in 
+			(select empno from emp where deptno=
+				(select deptno from dept where loc='CHICAGO') 
+				and job='SALESMAN' and ename='MARTIN' and ename='&EnterNAME'))));
+
+create or replace view sales_view as
+select * from product where prodid in 
+	(select prodid from item where ordid in
+	(select ordid from ord where custid in 
+		(select custid from customer where repid in 
+			(select empno from emp where deptno=
+				(select deptno from dept where loc='CHICAGO') 
+				and job='SALESMAN' and ename='MARTIN'))));
