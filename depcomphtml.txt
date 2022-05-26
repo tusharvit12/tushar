@@ -1,0 +1,31 @@
+<h1> Showing all the departments </h1>
+<table border="10" cellspacing=10 cellpadding=10>
+    <th>DEPTNO</th><th>DEPT NAME</th><th>LOCATION</th>
+        
+    <tr>
+        <td><input type=number [(ngModel)]="dept.departmentNumber"></td>
+        <td><input type=string [(ngModel)]="dept.departmentName"></td>
+        <td><input type=string [(ngModel)]="dept.departmentLocation"></td>
+        <td><button (click)="addDept()">ADD</button></td> 
+        <td><span>{{message}}</span></td>
+    </tr>
+        
+    <tr *ngFor="let deptObj of allDepts">
+        
+        <td>
+                {{deptObj.departmentNumber}}
+        </td>
+        <td>
+               <input type="text" [(ngModel)]="deptObj.departmentName">
+        </td>
+        <td>
+                <input type="text" [(ngModel)]="deptObj.departmentLocation">
+        </td>
+        <td>
+                <button (click)="editDept(deptObj)">EDIT</button>
+        </td>
+        <td>
+                <button (click)="deleteThis(deptObj.departmentNumber)">DELETE</button>
+        </td>
+    </tr>
+</table>
