@@ -1,0 +1,129 @@
+
+
+create table Customer_dashboard
+(
+cust_id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 101 INCREMENT BY 1) NOT NULL,
+name varchar2(50) NOT NULL,
+email varchar2(50) NOT NULL,
+mobile varchar2(10)NOT NULL,
+date_of_birth date NOT NULL,
+pan_number varchar2(10) NOT NULL
+);
+
+ALTER TABLE customer_dashboard ADD CONSTRAINT cust_pk PRIMARY KEY (cust_id);
+
+insert into Customer_dashboard values(DEFAULT,'Rahul Singh', 'rahulSingh@gmail.com', '9865256326',TO_DATE('22/01/1988','DD/MM/YYYY'),'BKDPD5692R');
+insert into Customer_dashboard values(DEFAULT,'Rakesh Kumar', 'rakeshkumar@gmail.com', 9865236145,TO_DATE( '26/07/1989','DD/MM/YYYY'),'DKDPY3652G');
+insert into Customer_dashboard values(DEFAULT,'Nagendra Singh', 'nagendrasingh@gmail.com',6325965845,TO_DATE('09-04-1985','DD/MM/YYYY'),'MKOPS6225Q');
+insert into Customer_dashboard values(DEFAULT,'Vikas Patil', 'vikaspatil@gmail.com',9869758659,TO_DATE('21-06-1992','DD/MM/YYYY'),'DDOPK8556A');
+insert into Customer_dashboard values(DEFAULT,'Dharmendra Wadhwa', 'dharmendrawadhwa@gmail.com', 8356874569,TO_DATE('11-12-1978','DD/MM/YYYY'),'ANJPG5689A')
+insert into Customer_dashboard values(DEFAULT,'Sachin Sharma', 'sachinsharma@gmail.com',7256325951,TO_DATE('25-12-1998','DD/MM/YYYY'),'CFOPK8520E');
+
+
+
+select * from customer_dashboard;
+
+desc customer_Dashboard;
+
+commit;
+create table Address
+(
+Address_id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 5111 INCREMENT BY 1) NOT NULL,
+flat_no varchar2(30) NOT NULL,
+street_name varchar2(50) NOT NULL,
+city varchar2(30) NOT NULL,
+state varchar2(30) NOT NULL,
+country varchar2(10) NOT NULL,
+pin number NOT NULL,
+cust_no Number(12) NOT NULL
+);
+
+ALTER TABLE address ADD CONSTRAINT add_pk PRIMARY KEY (address_id);
+
+ALTER TABLE address
+ADD FOREIGN KEY(cust_no) REFERENCES customer_dashboard(cust_id);
+
+insert into Address values(DEFAULT,'D-104 ', 'Shaheed Bhagat Singh marg', 'Mumbai','Maharasthara', 'India',400614,101);
+insert into Address values(DEFAULT,'A-204', 'Chandra Shekhar Azad marg', 'Mumbai','Maharasthara', 'India',412625,102);
+insert into Address values(DEFAULT,'C-915', 'Akbar Road', 'Mumbai','Maharasthara', 'India',400524,103);
+insert into Address values(DEFAULT,'B-212', 'Barakhamba Road', 'Delhi','New Delhi', 'India',110001,104);
+insert into Address values(DEFAULT,'D-514', 'ManSingh Road', 'Delhi','New Delhi', 'India',110005,105);
+insert into Address values(DEFAULT,'B-705', 'Shaheed Bhagat Singh marg', 'Mumbai','Maharasthara', 'India',400614,106);
+
+select * from address;
+
+
+create table Account
+(
+  account_number INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 314752 INCREMENT BY 1) NOT NULL,
+  balance number,
+  limit number,
+  open_date date,
+  rate_of_interest NUMBER(3,2),
+  account_type varchar2(15),
+  branch_name  varchar2(20),
+  cust_id INTEGER NOT NULL
+);
+
+ALTER TABLE account ADD CONSTRAINT acc_pk PRIMARY KEY (account_number);
+
+ALTER TABLE Account
+ADD FOREIGN KEY(cust_id) REFERENCES customer_dashboard(cust_id);
+
+
+insert into Account values(DEFAULT,25000,25000,TO_DATE('25-04-2022','DD/MM/YYYY'),3.5,'Saving','CBD BELAPUR',101);
+insert into Account values(DEFAULT,25000,25000,TO_DATE('25-04-2022','DD/MM/YYYY'),5.5,'DEPOSIT','CBD BELAPUR',101);
+insert into Account values(DEFAULT,25000,25000,TO_DATE('25-04-2022','DD/MM/YYYY'),3.5,'PPF','CBD BELAPUR',101);
+insert into Account values(DEFAULT,85350,85350,TO_DATE('15-03-2021','DD/MM/YYYY'),0,'Current','SEAWOODS',102);
+insert into Account values(DEFAULT,200000,500000,TO_DATE('25-04-2022','DD/MM/YYYY'),3.5,'OD','CBD BELAPUR',101);
+insert into Account values(DEFAULT,25956,25956,TO_DATE('11-06-2005','DD/MM/YYYY'),3.5,'Saving','NERUL',103);
+insert into Account values(DEFAULT,25956,25956,TO_DATE('11-08-2005','DD/MM/YYYY'),4.5,'FD','NERUL',103);
+insert into Account values(DEFAULT,45358,45358,TO_DATE('18-05-2022','DD/MM/YYYY'),0,'Current','SEAWOODS',104);
+insert into Account values(DEFAULT,17500,17500,TO_DATE('26-09-2022','DD/MM/YYYY'),3.5,'Fixed Deposit','NERUL',105);
+insert into Account values(DEFAULT,12500,12500,TO_DATE('19-02-2022','DD/MM/YYYY'),3.5,'Savings','SEAWOODS',106);
+insert into Account values(DEFAULT,12500,12500,TO_DATE('19-04-2022','DD/MM/YYYY'),6.5,'LOAN_ACCOUNT','SEAWOODS',106);
+insert into Account values(DEFAULT,77500,77500,TO_DATE('23-01-2018','DD/MM/YYYY'),3.5,'Savings','NERUL',105);
+insert into Account values(DEFAULT,27500,27500,TO_DATE('01-2-2021','DD/MM/YYYY'),0,'Current','SEAWOODS',105);
+insert into Account values(DEFAULT,37500,37500,TO_DATE('19-09-2010','DD/MM/YYYY'),3.5,'Fixed Deposit','CBD BELAPUR',105);
+insert into Account values(DEFAULT,47500,47500,TO_DATE('14-07-2009','DD/MM/YYYY'),3.5,'Savings','CBD BELAPUR',105);
+
+select * from account;
+
+create table transaction
+(
+transaction_id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 2022051 INCREMENT BY 1) NOT NULL,
+source_account number  NOT NULL,
+destination_account number NOT NULL,
+transaction_type_sa varchar2(15),
+transaction_type_da varchar2(15),
+transaction_status varchar2(15),
+transaction_amount number,
+transaction_date date,
+comments varchar(30),
+cust_id Integer NOT NULL
+);
+
+ALTER TABLE transaction ADD CONSTRAINT txn_pk PRIMARY KEY (transaction_id);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY(cust_id) REFERENCES customer_dashboard(cust_id);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY(source_account) REFERENCES account(account_number);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY(destination_account) REFERENCES account(account_number);
+
+insert into Transaction values(DEFAULT,314763,314764,'dr','cr','success',3500,TO_DATE('25-04-2022','DD/MM/YYYY'),'transfer', 105);
+
+insert into Transaction values(DEFAULT,314764,314765,'dr','cr','success',10500,TO_DATE('25-04-2022','DD/MM/YYYY'), 'rent',105);
+
+
+select * from transaction;
+
+
+
+
+
+https://codereview.stackexchange.com/questions/231594/simple-banking-application-in-spring-boot-jpa-rest-where-balance-can-be-transf
+  
