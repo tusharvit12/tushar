@@ -1,0 +1,111 @@
+create table Address
+(
+Address_id number ,
+flat_no varchar2(30) NOT NULL,
+street_name varchar2(50) NOT NULL,
+city varchar2(30) NOT NULL,
+state varchar2(30) NOT NULL,
+country varchar2(10) NOT NULL,
+pin number NOT NULL,
+cust_no Number(12) NOT NULL
+);
+
+insert into Address values(101,'D-104 ', 'Shaheed Bhagat Singh marg', 'Mumbai','Maharasthara', 'India',400614,1011);
+insert into Address values(102,'A-204', 'Chandra Shekhar Azad marg', 'Mumbai','Maharasthara', 'India',412625,1012);
+insert into Address values(103,'C-915', 'Akbar Road', 'Mumbai','Maharasthara', 'India',400524,1013);
+insert into Address values(104,'B-212', 'Barakhamba Road', 'Delhi','New Delhi', 'India',110001,1014);
+insert into Address values(105,'D-514', 'ManSingh Road', 'Delhi','New Delhi', 'India',110005,1015);
+insert into Address values(106,'B-705', 'Shaheed Bhagat Singh marg', 'Mumbai','Maharasthara', 'India',400614,1016);
+
+
+
+create table Customer_dashboard
+(
+cust_id number primary key,
+name varchar2(50) NOT NULL,
+email varchar2(50) NOT NULL,
+mobile varchar2(10)NOT NULL,
+date_of_birth date NOT NULL,
+pan_number varchar2(10) NOT NULL
+);
+
+
+insert into Customer_dashboard values(1011,'Rahul Singh', 'rahulSingh@gmail.com', '9865256326',TO_DATE('22/01/1988','DD/MM/YYYY'),'BKDPD5692R');
+insert into Customer_dashboard values(1012,'Rakesh Kumar', 'rakeshkumar@gmail.com', '9865236145',TO_DATE( '26/07/1989','DD/MM/YYYY'),'DKDPY3652G');
+insert into Customer_dashboard values(1013,'Nagendra Singh', 'nagendrasingh@gmail.com','6325965845',TO_DATE('09-04-1985','DD/MM/YYYY'),'MKOPS6225Q');
+insert into Customer_dashboard values(1014,'Vikas Patil', 'vikaspatil@gmail.com','9869758659',TO_DATE('21-06-1992','DD/MM/YYYY'),'DDOPK8556A');
+insert into Customer_dashboard values(1015,'Dharmendra Wadhwa', 'dharmendrawadhwa@gmail.com', '8356874569',TO_DATE('11-12-1978','DD/MM/YYYY'),'ANJPG5689A');
+insert into Customer_dashboard values(1016,'Sachin Sharma', 'sachinsharma@gmail.com','7256325951',TO_DATE('25-12-1998','DD/MM/YYYY'),'CFOPK8520E');
+
+
+
+
+
+create table Account
+(
+account_number number primary key,
+balance number,
+limit number,
+open_date date,
+rate_of_interest NUMBER(3,2),
+account_type varchar2(15),
+branch_name  varchar2(20),
+cust_id number NOT NULL,
+CONSTRAINT customer_fk FOREIGN KEY(cust_id )
+REFERENCES Customer_dashboard(cust_id)
+);
+
+insert into Account values(2011000001,25000,25000,TO_DATE('25-04-2022','DD/MM/YYYY'),3.5,'Saving','CBD BELAPUR',1011);
+insert into Account values(2012000002,85350,85350,TO_DATE('15-03-2021','DD/MM/YYYY'),0,'Current','SEAWOODS',1012);
+insert into Account values(2013000003,25956,25956,TO_DATE('11-06-2005','DD/MM/YYYY'),3.5,'Saving','NERUL',1013);
+insert into Account values(2014000004,45358,45358,TO_DATE('18-05-2022','DD/MM/YYYY'),0,'Current','SEAWOODS',1014);
+insert into Account values(2015000005,17500,17500,TO_DATE('26-09-2022','DD/MM/YYYY'),3.5,'Fixed Deposit','NERUL',1015);
+insert into Account values(2016000006,12500,12500,TO_DATE('19-02-2022','DD/MM/YYYY'),3.5,'Savings','SEAWOODS',1016);
+insert into Account values(2017000007,77500,77500,TO_DATE('23-01-2018','DD/MM/YYYY'),3.5,'Savings','NERUL',1015);
+insert into Account values(2018000008,27500,27500,TO_DATE('01-2-2021','DD/MM/YYYY'),0,'Current','SEAWOODS',1015);
+insert into Account values(2019000009,37500,37500,TO_DATE('19-09-2010','DD/MM/YYYY'),3.5,'Fixed Deposit','CBD BELAPUR',1015);
+insert into Account values(2020000010,47500,47500,TO_DATE('14-07-2009','DD/MM/YYYY'),3.5,'Savings','CBD BELAPUR',1015);
+
+insert into Account values(2011,25000,25000,TO_DATE('25-04-2022','DD/MM/YYYY'),3.5,'Saving',1011,);
+
+
+
+create table Transaction
+(
+transaction_id number primary key,
+transaction_type varchar2(15),
+transaction_status varchar2(15),
+transaction_amount number,
+transaction_date date,
+destination_account number NOT NULL,
+source_account number  NOT NULL
+);
+
+alter table transaction drop column transaction_time;
+
+insert into transaction values(1122, 'dr', 'success', 5000, 
+
+insert into Transaction values(1122,'dr','success',500,TO_DATE('25-04-2022','DD/MM/YYYY'), 2017000007,2019000009);
+
+insert into Transaction values(1123,'cr','success',1500,TO_DATE('25-04-2022','DD/MM/YYYY'), 2017000009,2019000007);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY (destination_account) REFERENCES Account(account_number);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY (source_account) REFERENCES Account(account_number);
+
+insert into Transaction values(1122,'dr','success',500,TO_DATE('25-04-2022','DD/MM/YYYY'), 2017,2019,1015);
+
+insert into Transaction values(1123,'dr','success',1500,TO_DATE('25-04-2022','DD/MM/YYYY'), 2019,2017,1015);
+
+ALTER TABLE transaction
+ADD FOREIGN KEY (source_account) REFERENCES Account(account_number);
+
+ALTER TABLE transaction
+ADD cust_id number;
+
+DELETE FROM transaction WHERE transaction_id=1122;
+
+ALTER TABLE transaction
+ADD FOREIGN KEY (cust_id) REFERENCES customer_dashboard(cust_id);
